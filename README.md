@@ -6,7 +6,7 @@ _"Observationally constrained climate sensitivity implies high climate tipping r
 
 _Rike Mühlhaus, Norman J. Steinert, Johan Rockström, Nico Wunderling_
 
-Manuscript subitted.
+Manuscript submitted.
 
 Code version used for the paper submission: v1.0
 
