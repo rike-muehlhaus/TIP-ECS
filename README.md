@@ -34,9 +34,7 @@ further: see requirements.txt
 
 ## 1. FaIR
 
-`fair-get-temperatures.py`
-
-Uses the FaIR simple climate model to:
+`fair-get-temperatures.py` - Uses the FaIR simple climate model to:
 
 - generate an ensemble of ECS values  
 - construct CO₂ scenarios  
@@ -56,22 +54,16 @@ Files available in Zenodo:
 
 ## 2. Latin Hypercube Sampling
 
-`latin_probability_distribution.py`
-
-Generates sampled input parameters for PyCascades using Latin Hypercube Sampling.  
+`latin_probability_distribution.py` - Generates sampled input parameters for PyCascades using Latin Hypercube Sampling.  
 Parameters include tipping thresholds and tipping timescales based on values from the Global Tipping Points Report (2025).
 
-`latin_sh_file.txt`
-
-Shell commands used to run PyCascades simulations with different parameter combinations.
+`latin_sh_file.txt` - Shell commands used to run PyCascades simulations with different parameter combinations.
 
 ---
 
 ## Preprocessing
 
-`ECS-T Files in right format.py`
-
-Formats and compresses ECS temperature time series into the format required by PyCascades.
+`ECS-T Files in right format.py` - Formats and compresses ECS temperature time series into the format required by PyCascades.
 
 Output:
 
@@ -81,13 +73,9 @@ Output:
 
 ## 3. PyCascades
 
-`MAIN-No_enso.py`
+`MAIN-No_enso.py` - Main script used to run PyCascades simulations.
 
-Main script used to run PyCascades simulations.
-
-`PyCas_plot.py` 
-
-Used later to create a figure of one examplary tipping element state progression time series
+`PyCas_plot.py` - Used later to create a figure of one examplary tipping element state progression time series
 
 Supporting modules:
 
@@ -97,9 +85,7 @@ Supporting modules:
 
 Running Pycascades requires:
 
-`ecs-timeseries.zip`
-
-Puts the contained files into a folder called `temp_input`
+`ecs-timeseries.zip` - Puts the contained files into a folder called `temp_input`
 
 `latin_sh_file.txt`
 
@@ -107,51 +93,29 @@ Puts the contained files into a folder called `temp_input`
 
 ## 4. Analysis
 
-`pycas_out.py`
-
-Collects PyCascades outputs and computes tipping risks.
+`pycas_out.py` - Collects PyCascades outputs and computes tipping risks.
 
 Output:
 
-`risks_data.npy`
+`risks_data.npy` - Available in the Zenodo archive.
 
-Available in the Zenodo archive.
+`load_data.py` - Necessary to load automatically the data from the Zenodo Project
 
-`load_data.py` 
+`results-analyse.py` - Prints the Numbers named in the Results.
 
-Necessary to load automatically the data from the Zenodo Project
+`introduction_plot.py` - Creates Fig. 1, b, c, d, and e. Needs PyCas_plot.py in the PyCascades folder.
 
-`results-analyse.py`
+`main-ECS-TR-plot.py` - Creates Fig. 2
 
-Prints the Numbers named in the Results.
+`ECS-PPM_main-plot.py` - Creates Fig. 3
 
-`introduction_plot.py` 
+`Fig4.py` - Creates Fig. 4
 
-Creates Fig. 1, b, c, d, and e. Needs PyCas_plot.py in the PyCascades folder.
+`S_case_specific.py` - Creates Supplementary figures Fig.S3 and Fig.S4. 
 
-`main-ECS-TR-plot.py` 
+`CS_review_plot.py` - Creates Supplementary figure Fig.S1. 
 
-Creates Fig. 2
-
-`ECS-PPM_main-plot.py` 
-
-Creates Fig. 3
-
-`Fig4.py` 
-
-Creates Fig. 4
-
-`S_case_specific.py` 
-
-Creates Supplementary figures Fig.S3 and Fig.S4. 
-
-`CS_review_plot.py` 
-
-Creates Supplementary figure Fig.S1. 
-
-`SM-hist.py` 
-
-Creates Supplementary figure Fig.S2. 
+`SM-hist.py` - Creates Supplementary figure Fig.S2. 
 
 ---
 
