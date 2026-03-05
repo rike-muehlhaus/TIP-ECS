@@ -4,7 +4,7 @@ The project investigates the relationship between climate sensitivity and the ri
 
 _"Observationally constrained climate sensitivity implies high climate tipping risk"_ 
 
-_Rike Mühlhaus, Norman Steinert, Johan Rockström, Nico Wunderling_
+_Rike Mühlhaus, Norman J. Steinert, Johan Rockström, Nico Wunderling_
 
 Manuscript subitted.
 
