@@ -42,20 +42,14 @@ further: see requirements.txt
 
 Outputs:
 
-- temperature time series  
-- ECS ensemble  
-
-Files available in Zenodo:
-
-- `Temperature.zip`
-- `tcrecs.txt`
+- temperature time series: `Temperature.zip` (available on Zenodo)
+- ECS ensemble: `tcrecs.txt` (available on Zenodo)
 
 ---
 
 ### 2. Latin Hypercube Sampling
 
-`latin_probability_distribution.py` - Generates sampled input parameters for PyCascades using Latin Hypercube Sampling.  
-Parameters include tipping thresholds and tipping timescales based on values from the Global Tipping Points Report (2025).
+`latin_probability_distribution.py` - Generates sampled input parameters for PyCascades using Latin Hypercube Sampling. Parameters include tipping thresholds and tipping timescales based on values from the Global Tipping Points Report (2025).
 
 `latin_sh_file.txt` - Shell commands used to run PyCascades simulations with different parameter combinations.
 
@@ -65,9 +59,7 @@ Parameters include tipping thresholds and tipping timescales based on values fro
 
 `ECS-T Files in right format.py` - Formats and compresses ECS temperature time series into the format required by PyCascades.
 
-Output:
-
-`ecs-timeseries.zip` (available on Zenodo)
+Output: `ecs-timeseries.zip` (available on Zenodo)
 
 ---
 
@@ -95,9 +87,7 @@ Running Pycascades requires:
 
 `pycas_out.py` - Collects PyCascades outputs and computes tipping risks.
 
-Output:
-
-`risks_data.npy` - Available in the Zenodo archive.
+    Output: `risks_data.npy` (available on Zenodo)
 
 `load_data.py` - Necessary to load automatically the data from the Zenodo Project
 
