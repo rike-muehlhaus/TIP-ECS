@@ -30,9 +30,9 @@ Python ≥ 3.10
 
 further: see requirements.txt
 
-# Repository Structure
+## Repository Structure
 
-## 1. FaIR
+### 1. FaIR
 
 `fair-get-temperatures.py` - Uses the FaIR simple climate model to:
 
@@ -52,7 +52,7 @@ Files available in Zenodo:
 
 ---
 
-## 2. Latin Hypercube Sampling
+### 2. Latin Hypercube Sampling
 
 `latin_probability_distribution.py` - Generates sampled input parameters for PyCascades using Latin Hypercube Sampling.  
 Parameters include tipping thresholds and tipping timescales based on values from the Global Tipping Points Report (2025).
@@ -61,7 +61,7 @@ Parameters include tipping thresholds and tipping timescales based on values fro
 
 ---
 
-## Preprocessing
+### Preprocessing
 
 `ECS-T Files in right format.py` - Formats and compresses ECS temperature time series into the format required by PyCascades.
 
@@ -71,7 +71,7 @@ Output:
 
 ---
 
-## 3. PyCascades
+### 3. PyCascades
 
 `MAIN-No_enso.py` - Main script used to run PyCascades simulations.
 
@@ -91,7 +91,7 @@ Running Pycascades requires:
 
 ---
 
-## 4. Analysis
+### 4. Analysis
 
 `pycas_out.py` - Collects PyCascades outputs and computes tipping risks.
 
