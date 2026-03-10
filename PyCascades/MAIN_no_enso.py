@@ -181,7 +181,8 @@ for kk in plus_minus_links:
                 
                 if len(output) != 0:
                     #saving structure
-                    data = np.array(output)                    
+                    data = np.array(output)
+                    out_gmt.append(data[-1])
 
             #necessary for break condition
             if len(out_gmt) != 0:
