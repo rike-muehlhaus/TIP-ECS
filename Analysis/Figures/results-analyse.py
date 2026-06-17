@@ -28,8 +28,7 @@ if not risk_file.exists():
         filename="risks_data.npy"
     )
 else:
-    print(f"{risk_file} exists already, skipping download.")
-    
+    print(f"{risk_file} exists already, skipping download.") 
 risk = np.load("data/risks_data.npy")
 
 # Load ECS data

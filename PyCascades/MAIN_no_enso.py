@@ -181,14 +181,17 @@ for kk in plus_minus_links:
                 
                 if len(output) != 0:
                     #saving structure
-                    data = np.array(output)                    
-
-            #necessary for break condition
-            if len(out_gmt) != 0:
-                #saving structure
-                output_data = np.array(out_gmt)
-                np.savetxt("{}/network_{}_{}_{}/ECS{}_ID{}_Scenario{}_strngth{}.txt".format(long_save_name, 
+                    data = np.array(output) 
+                    np.savetxt("{}/network_{}_{}_{}/ECS{}_ID{}_Scenario{}_strngth{}.txt".format(long_save_name, 
                     kk[0], kk[1], kk[2], ECS, latin_ID,ScenarioC[col], strength), output_data, fmt = '%s')
+               
+
+
+            #if len(out_gmt) != 0:
+                #saving structure
+             #   output_data = np.array(out_gmt)
+              #  np.savetxt("{}/network_{}_{}_{}/ECS{}_ID{}_Scenario{}_strngth{}.txt".format(long_save_name, 
+               #     kk[0], kk[1], kk[2], ECS, latin_ID,ScenarioC[col], strength), output_data, fmt = '%s')
 
 print("Finish")
 

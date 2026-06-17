@@ -70,6 +70,7 @@ else:
     print(f"{risk_file} exists already, skipping download.")
     
 risk = np.load("data/risks_data.npy")
+print(len(risk))
 
 #%%
 scenarios = np.array((309, 344, 382, 424, 523, 646, 798))
