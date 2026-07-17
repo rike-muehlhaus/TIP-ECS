@@ -11,8 +11,11 @@ Steps:
 """
 
 # import libraries
+import os
+import sys
 import fair
 import numpy as np
+from pathlib import Path
 # to run fair
 from fair.forward import fair_scm
 # to import tcrecs
@@ -22,11 +25,20 @@ from fair.tools.ensemble import tcrecs_generate
 from sklearn.linear_model import LinearRegression
 from sklearn.metrics import r2_score
 
+# Current folder
+here = Path(__file__).resolve().parent
+print("Requre the following folder: Analysis/data")
+saving_file = here.parent / "Analysis/data" / "Temperature"
+print(saving_file)
+
+if not saving_file.exists():
+    saving_file.mkdir() 
+
 """
 1. Generate TCR-ECS Pairs
 Identify median and index of median closest ECS
 """
-
+print("1. Generate TCR-ECS Pairs")
 # generate 1000 TCR and ECS pairs, using a normal distribution informed by CMIP5 models
 ne = 1000 # number of ecs ensemble members
 tcrecs = tcrecs_generate('cmip5', n=ne, dist='norm', correlated=True, seed=12)
@@ -48,6 +60,7 @@ We will try this for several CO2 concentrations to find,
  which ppm value corresponds to 0.5, 1.0, 1.5, 2, 3, 4, and 5°C global warming.
 
 """
+print("2. Find ppm for Temperature Scenarios")
 start_ppm = 278 # preindustrial value 
 test_ppm = 797 # here we insert different values and run the code below, to find the corresponding final Temperature
 slope = (test_ppm - start_ppm) / 200
@@ -75,9 +88,9 @@ to find the ppms corresponding to the wished temperatures
 I found: ppms = [309, 344, 382, 424, 523, 646, 798]
 """
 
-"""
-3. Run Fair model von co2 scenarios
-"""
+
+print("3. Run Fair model von co2 scenarios")
+
 ppms = [309, 344, 382, 424, 523, 646, 798]
 start_ppm = 278
 nt = 50000 # number of time steps (in years) 
@@ -106,7 +119,8 @@ for ci,c in enumerate(conc_list):
                                 tcrecs = tcrecs[i,:],
                                 useMultigas = False
                                )
-    np.savetxt(f"C:/Users/LENOVO/Desktop/FAIR-PyCas/Tdata/T_{ci}.txt",T, delimiter = ",")    
+    full_path = saving_file / f"T_{ci}.npy"
+    np.save(full_path, T, delimiter=",")
 """
 Done :)
 """
