@@ -3,8 +3,8 @@ import glob
 import numpy as np
 
 # --- Path Setup ---
-base_path = "/p/projects/dominoes/rikemue/ecs-pycas-latin/"
-results_path = os.path.join(base_path, "results/")
+base_path = Path('.') # Assuming this script is run from the project root
+results_path = base_path / "PyCascades" / "results"
 
 tcrecs = np.loadtxt(os.path.join(base_path, "tcrecs.txt"), delimiter=",")
 ecs_unique = np.unique(np.round(tcrecs[:, 1], 6))
