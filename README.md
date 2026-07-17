@@ -59,6 +59,10 @@ Parameters include tipping thresholds and tipping timescales based on values fro
 
 `latin_sh_file.txt` - Shell commands used to run PyCascades simulations with different parameter combinations.
 
+`latin_probability_distribution_no_interactions.py` - Generates sampled input parameters for PyCascades runs without interacctions using Latin Hypercube Sampling.
+
+`latin_sh_file_no_interactions.txt` - Shell commands used to run PyCascades simulations without interactions.
+
 ---
 
 ### Preprocessing
@@ -73,7 +77,7 @@ Output:
 
 ### 3. PyCascades
 
-`MAIN-No_enso.py` - Main script used to run PyCascades simulations.
+`MAIN_No_enso.py` - Main script used to run PyCascades simulations.
 
 `PyCas_plot.py` - Used later to create a figure of one examplary tipping element state progression time series
 
@@ -89,6 +93,12 @@ Running Pycascades requires:
 
 `latin_sh_file.txt`
 
+#### No interactions
+
+`MAIN_no_interactions.py` - Run PyCascades without simlations.
+
+Requires: latin_sh_file_no_interactions.txt latin_probability_distribution_no_interactions.py
+
 ---
 
 ### 4. Analysis
@@ -99,13 +109,22 @@ Output:
 
 `risks_data.npy` - Available in the Zenodo archive.
 
+
+`pycas_out_no_int.py` - Collects PyCascades outputs and computes tipping risks.
+
+Output:
+
+`risks_data_no_interactions.npy` - Available in the Zenodo archive.
+
 `load_data.py` - Necessary to load automatically the data from the Zenodo Project
 
-`results-analyse.py` - Prints the Numbers named in the Results.
+`results-analyse.py` - Prints the numbers named in the Results.
+
+`analysing-tcr.py`- Contains all TCR related analysis, including plots.
 
 `introduction_plot.py` - Creates Fig. 1, b, c, d, and e. Needs PyCas_plot.py in the PyCascades folder.
 
-`main-ECS-TR-plot.py` - Creates Fig. 2
+`main-ECS-TR-plot-inc-no-interactions.py` - Creates Fig. 2
 
 `ECS-PPM_main-plot.py` - Creates Fig. 3
 
@@ -116,6 +135,8 @@ Output:
 `CS_review_plot.py` - Creates Supplementary figure Fig.S1. 
 
 `SM-hist.py` - Creates Supplementary figure Fig.S2. 
+
+`time-til-equ.py` - Creates Supplementary figure.S?.
 
 ---
 

@@ -1,8 +1,7 @@
 import os
 import glob
 import numpy as np
-# ITS STILL IN NO INTERACTION MODE!!!!!!!!
-' NEED TO CHANGE INPUT AND OUTPUT FOLDER IF WANT TO RUN with interactions AGAIN'
+
 # --- Path Setup ---
 base_path = "/p/projects/dominoes/rikemue/ecs-pycas-latin/"
 results_path = os.path.join(base_path, "Review0/results/")
@@ -27,7 +26,6 @@ for network in networks:
         data = np.loadtxt(f)
         if data.ndim == 1: data = data.reshape(1, -1)
         
-        # New indexing 
         # New indexing 
         # 0:ECS, 1:Scenario, 4:TotalTipped, 5:GIS, 6:AMOC, 7:WAIS, 8:AMAZ #[:, [0, 1, 4, 5, 6, 7, 8]]
         extracted = data[:,[0, 1, 3, 4, 5, 6, 7]]  #[0, 1, 4, 5, 6, 7, 8]] #[0, 1, 3, 4, 5, 6, 7]] # this version for no interaction

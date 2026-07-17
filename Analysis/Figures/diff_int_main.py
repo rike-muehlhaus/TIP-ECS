@@ -1,7 +1,6 @@
 import os
 import numpy as np
 import matplotlib.pyplot as plt
-from matplotlib.lines import Line2D
 import seaborn as sns
 import sys
 from pathlib import Path
@@ -85,12 +84,17 @@ scenarios = np.array((309, 344, 382, 424, 523, 646, 798))
 n_colors = 7
 scenario_colors = [cm.roma_r(i) for i in np.linspace(0, 1, n_colors)]
 
-myhre = 2.9
+def set_axis_style(ax, labels):
+    ax.set_xticks(np.arange(1, len(labels) + 1), labels=labels)
+    ax.set_xlim(0.25, len(labels) + 0.75)
+    ax.set_xlabel('Stabilization Level (ppm CO2)')
+
 
 # need to make figure with 2 axis
 fig, (ax) = plt.subplots(1, 1)
 
 ### subfig 
+all_data = []
 for i, s in enumerate(reversed(scenarios)):
     data = risk[risk[:, 1].astype(int) == s]
     x = data[:, 0].astype(float)
@@ -102,37 +106,49 @@ for i, s in enumerate(reversed(scenarios)):
     no_interactions_y = no_interactions_data[:, 2].astype(float)
 
     dif = np.sqrt((y-no_interactions_y)**2)
-
+    all_data.append(dif)
+    print(np.max(all_data))
 
     #ax.scatter(x, y, color=color, zorder=4,  linewidth=0.3, s=7, label=f"{s} ppm")
     #ax.scatter(no_interactions_x, no_interactions_y, linewidth=0.1, alpha = 0.4, s=5, color=color, zorder=3)
     #ax.plot(x,dif, color=color, zorder=4, alpha = 0.7,  label=f"{s} ppm")    
-    ax.scatter(x,dif, color=color, zorder=4, alpha = 0.7, s = 5, linewidth=0.2, edgecolor = "white",  label=f"{s} ppm")    
+parts = ax.violinplot(all_data, showmedians=True)    
+for body, color in zip(parts['bodies'], scenario_colors):
+    body.set_facecolor(color)
+    body.set_edgecolor(color)
+    body.set_alpha(0.5)
 
 
-    
-ax.axhline(y=0.1, color="black", linestyle="--", lw=0.5)
-ax.axhline(y=0.05, color="black", linestyle=":", lw=0.5)
-ax.axhline(y=0, color="black", lw=0.2, zorder=-1)
-ax.set_xlabel("Equilibrium Climate Sensitivity (°C)")
+if 'cmedians' in parts:
+    parts['cmedians'].set_color('black')
+    parts['cmedians'].set_linewidth(0.8)
+
+# Extrema lines (min/max and center bars)
+for key in ['cmins', 'cmaxes', 'cbars']:
+    if key in parts:
+        parts[key].set_color('black')
+        parts[key].set_linewidth(0.5)
+
+set_axis_style(ax, scenarios)
 ax.set_ylabel("$\Delta$ Tipping Risk (%)")
-ax.set_ylim(-0.01, 0.15)
-#ax.set_xlim(0.5, 6)
-ax.set_yticks(np.arange(0, 0.15, 0.05))
-ax.set_yticklabels([f"{int(tick * 100)}" for tick in np.arange(0, 0.15, 0.05)])
+ax.set_yticks(np.arange(0, 0.151, 0.05))
+ax.set_yticklabels([f"{int(tick * 100)}" for tick in np.arange(0, 0.151, 0.05)])
 ax.tick_params(axis='both', which='major', width=0.5, length=2)
-#ax.axvline(x = np.median(tcrecs[:,1]), color = "gray", lw=0.6, linestyle="--")
+#ax.axhline(y=0.13, color="black",linestyle = "--", lw=0.5, zorder=-1)
+#ax.text(6.15, 0.133, "13% Difference", color="black", ha="left")
+for i, data in enumerate(all_data, start=1):
+    ymax = max(data)
+    display_text = max(data)*100
 
-# Custom legend
-# First legend: colors (scenarios)
-color_legend = ax.legend(loc='upper right',bbox_to_anchor=(1.34, 0.89), title="Scenarios", frameon=False, title_fontsize=6, labelspacing=0.5)
-
-# Keep it when adding another legend
-ax.add_artist(color_legend)
-
-plt.subplots_adjust(right=0.78, left=0.13, top=0.93, bottom=0.19)
+    ax.text(
+        i,                  # x-position
+        ymax,               # y-position
+        f'{display_text:.2f}',      # displayed text
+        ha='center',
+        va='bottom'
+    )
+plt.subplots_adjust(right=0.95, left=0.13, top=0.93, bottom=0.19)
 #plt.tight_layout()
 #plt.show()
 
-plt.savefig("Fig2_diff.pdf")
-print("Figure saved as Fig2_compared.pdf")
+plt.savefig("Fig2_diff_violins.pdf")

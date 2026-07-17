@@ -380,4 +380,4 @@ for idx, r_idx in enumerate(reversed(range(-4, 0))):
         cbar.ax.tick_params(axis='both', which='major', labelsize=6)
         
 
-#plt.savefig("FigS2_TCR_with_heatmap.pdf")
+plt.savefig("FigS2_TCR_with_heatmap.pdf")
