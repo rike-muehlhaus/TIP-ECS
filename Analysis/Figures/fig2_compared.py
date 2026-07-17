@@ -72,10 +72,10 @@ else:
 tcrecs = np.loadtxt("data/tcrecs.txt", delimiter=",")
 
 # Load Risk Data
-risk_file = Path("data/risks_data_no_interactions.npy")
+risk_file = Path("data/risks_data.npy")
 if not risk_file.exists():
     download_from_zenodo(
-        filename="risks_data_no_interactions.npy"
+        filename="risks_data.npy"
     )
 else:
     print(f"{risk_file} exists already, skipping download.")
@@ -83,7 +83,17 @@ else:
 risk = np.load("data/risks_data.npy")
 risk = risk[np.argsort(risk[:,0])]
 
+# Load Risk Data
+risk_file_ni = Path("data/risks_data_no_interactions.npy")
+if not risk_file_ni.exists():
+    download_from_zenodo(
+        filename="risks_data_no_interactions.npy"
+    )
+else:
+    print(f"{risk_file_ni} exists already, skipping download.")
+
 not_interactions_risk = np.load("data/risks_data_no_interactions.npy")
+
 ecs = np.round(tcrecs[:,1],6) 
 scenarios = np.array((309, 344, 382, 424, 523, 646, 798))
 

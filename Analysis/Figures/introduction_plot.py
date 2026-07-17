@@ -214,17 +214,6 @@ sub.set_xticklabels([str(y) for y in tick_years])
 
 # Optional separator at year 1000
 sub.axvline(compress_time(np.array([1000]))[0], color="black", lw=0.5)
-
-""" for i in range(1000):
-    plt.plot(T15[:800, i], color=scenario_colors[2], alpha=0.3, lw=0.5)
-    plt.plot(np.arange(800,1000), T15[800:1000, i], alpha=0.1, lw=0.5, color=scenario_colors[2])                
-sub.plot(np.arange(0,1200), T15[:1200, 334], color="gray", lw=1, label="382 ppm Scenario:\n$\Delta$GMT under\nmedian ECS")
-sub.axvline(800, color="black", lw=0.5)
-sub.legend(frameon=False, loc="upper left", fontsize=6)
-sub.tick_params(axis='both', which='major', width=0.5, length=2)
-sub.set_xticks(np.arange(0,1001,200))
-sub.set_xticklabels(["0","200","400","800","1000","50000"])
-"""
 sub.set_ylabel('$\Delta$GMST (°C)')
 sub.set_xlabel("Time (years)")
 sub.annotate(numbering_panels[1], xy=(-0.1, 1.05), xycoords='axes fraction', ha='left', size=7, color="black", weight="bold")

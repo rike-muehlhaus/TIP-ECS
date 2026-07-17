@@ -61,14 +61,14 @@ else:
     print(f"{tcrecs_file} exists already, skipping download.")
 
 tcrecs = np.loadtxt("data/tcrecs.txt", delimiter=",")
-""" 
+
 # Load Risk Data
-risk_file = Path("data/risks_data.npy")
+risk_file = Path("data/risks_data_no_interactions.npyy")
 if not risk_file.exists():
-    download_from_zenodo(filename="risks_data.npy")
+    download_from_zenodo(filename="risks_data_no_interactions.npy")
 else:
     print(f"{risk_file} exists already, skipping download.")
-  """   
+ 
 risk = np.load("data/risks_data_no_interactions.npy")
 print(len(risk))
 

@@ -43,7 +43,7 @@ ScenarioC = [309, 344, 382, 424, 523, 646, 798]
 
 #Names to create the respective directories
 #namefile = "no"
-long_save_name = "Review0/results"
+long_save_name = "Review/results"
 
 # if oscillation output
 amoc_os = []
@@ -200,5 +200,4 @@ for kk in plus_minus_links:
 
     
 print("Finish")
-#end = time.time()
-#print("Time elapsed until Finish: {}s".format(end - start))
+

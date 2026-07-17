@@ -120,55 +120,5 @@ sh_file = np.array(sh_file)
 np.savetxt("latin_sh_file_no_interactions.txt", sh_file, delimiter=" ", fmt="%s")
 
 print("Saved latin_sh_file_no_interactions.txt")
-""" 
-# Rest of your plotting code remains the same...
-#tipping ranges and plots
-gis = array_limits.T[0]
-thc = array_limits.T[1]
-wais = array_limits.T[2]
-amaz = array_limits.T[3]
-nino = array_limits.T[4]
-
-plt.hist(gis, 25, facecolor= element_colors[2], alpha=0.8, label="GIS")
-plt.hist(thc, 25, facecolor= element_colors[0], alpha=0.8, label="AMOC")
-plt.hist(wais, 25, facecolor=element_colors[3], alpha=0.8, label="WAIS")
-plt.hist(amaz, 25, facecolor=element_colors[1], alpha=0.8, label="AMAZ")
-legend = plt.legend(loc='best', frameon=True)
-legend.get_frame().set_facecolor('white')
-legend.get_frame().set_edgecolor('white')   # optional
-legend.get_frame().set_alpha(1)
-plt.xlabel("Tipping Temperature [°C]")
-#plt.ylabel("N")
-plt.tight_layout()
-plt.savefig("latin_prob_TR.png")
-plt.savefig("latin_prob_TR.pdf")
-plt.show()
-plt.clf()
-plt.close()
-
-#feedbacks
-rand_tau_gis = array_limits.T[5]
-rand_tau_thc = array_limits.T[6]
-rand_tau_wais = array_limits.T[7]
-rand_tau_nino = array_limits.T[8]
-rand_tau_amaz = array_limits.T[9]
-
-plt.hist(rand_tau_gis,  100, facecolor= element_colors[2], alpha=0.8, label="GIS")
-plt.hist(rand_tau_thc,  100, facecolor= element_colors[0],ec = element_colors[1], alpha=0.8, label="AMOC")
-plt.hist(rand_tau_wais, 100, facecolor= element_colors[3], alpha=0.8, label="WAIS")
-plt.hist(rand_tau_amaz, 100, color=element_colors[1],ec = element_colors[1], alpha=0.8, label="AMAZ")
-legend = plt.legend(loc='best', frameon=True)
-legend.get_frame().set_facecolor('white')
-legend.get_frame().set_edgecolor('white')   # optional
-legend.get_frame().set_alpha(.8)
-plt.xlabel("Tipping time (Years)")
-#plt.ylabel("N")
-plt.tight_layout()
-plt.savefig("latin_prob_tau.png")
-plt.savefig("latin_prob_tau.pdf")
-plt.show()
-plt.clf()
-plt.close()
- """
 
 print("Finish")

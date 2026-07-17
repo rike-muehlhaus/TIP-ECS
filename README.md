@@ -89,7 +89,9 @@ Running Pycascades requires:
 
 `MAIN_no_interactions.py` - Run PyCascades without simlations.
 
-Requires: latin_sh_file_no_interactions.txt latin_probability_distribution_no_interactions.py
+Requires: 
+
+`latin_sh_file_no_interactions.txt` produced by `latin_probability_distribution_no_interactions.py`
 
 ---
 
@@ -110,7 +112,7 @@ Output:
 
 `results-analyse.py` - Prints the numbers named in the Results.
 
-`analysing-tcr.py`- Contains all TCR related analysis, including plots.
+`analysing-tcr.py`- Contains all TCR related analysis, including Figures S4, S5, .
 
 `introduction_plot.py` - Creates Fig. 1, b, c, d, and e. Needs PyCas_plot.py in the PyCascades folder.
 
@@ -120,13 +122,21 @@ Output:
 
 `Fig4.py` - Creates Fig. 4
 
-`S_case_specific.py` - Creates Supplementary figures Fig.S3 and Fig.S4. 
+Supplementary Plots and Information:
 
-`CS_review_plot.py` - Creates Supplementary figure Fig.S1. 
+`CS_review_plot.py` - Creates Supplementary figure S1. 
 
-`SM-hist.py` - Creates Supplementary figure Fig.S2. 
+`time-til-equ.py` - Creates Supplementary figure S2.
 
-`time-til-equ.py` - Creates Supplementary figure.S?.
+`SM-hist.py` - Creates Supplementary figure S6. 
+
+`S_case_specific.py` - Creates Supplementary figures S7 and S8. 
+
+`diff_int_main.py`- Creates Supplementary figure S9. 
+
+`analysing-tcr.py`- Contains all TCR related analysis, including Figures S4, and S5.
+
+`no_interactions_analysis.py` - provides quantitative information about the no-interactions runs.
 
 ---
 

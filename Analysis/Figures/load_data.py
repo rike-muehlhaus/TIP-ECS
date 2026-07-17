@@ -2,7 +2,7 @@
 import requests
 from pathlib import Path
 
-def download_from_zenodo(filename, record_id = "18511488", outdir="data"):
+def download_from_zenodo(filename, record_id = "20713863", outdir="data"):
     Path(outdir).mkdir(exist_ok=True)
     url = f"https://zenodo.org/record/{record_id}/files/{filename}"
 
@@ -19,7 +19,7 @@ def download_from_zenodo(filename, record_id = "18511488", outdir="data"):
 
 import zipfile
 
-def download_and_extract(zipname, record_id="18511488", outdir="data"):
+def download_and_extract(zipname, record_id="20713863", outdir="data"):
     Path(outdir).mkdir(exist_ok=True)
     url = f"https://zenodo.org/record/{record_id}/files/{zipname}"
 

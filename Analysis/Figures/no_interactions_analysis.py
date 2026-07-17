@@ -17,16 +17,15 @@ os.chdir(parent)
 
 from load_data import download_from_zenodo
 
-""" # Load Risk Data
-risk_file = Path("data/risks_data.npy")
-if not risk_file.exists():
+# Load Risk Data
+risk_file_ni = Path("data/risks_data_no_interactions.npy")
+if not risk_file_ni.exists():
     download_from_zenodo(
-        record_id="17474466",
-        filename="risks_data.npy"
+        filename="risks_data_no_interactions.npy"
     )
 else:
-    print(f"{risk_file} exists already, skipping download.")
-  """   
+    print(f"{risk_file_ni} exists already, skipping download.")
+
 risk = np.load("data/risks_data_no_interactions.npy")
 
 # Load ECS data
