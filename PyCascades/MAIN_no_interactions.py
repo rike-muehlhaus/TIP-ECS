@@ -16,6 +16,9 @@ sns.set(font_scale=1.)
 import itertools
 import time
 import glob
+from PyPDF2 import PdfMerger
+from netCDF4 import Dataset
+
 
 # private imports from sys.path
 from core.evolve import evolve
@@ -31,7 +34,7 @@ from earth_sys.earth_no_enso import earth_system
 #start = time.time()
 #############################GLOBAL SWITCHES#########################################
 time_scale = True            # time scale of tipping is incorporated
-plus_minus_include = True    # from Kriegler, 2009: Unclear links; if False all unclear links are set to off state and only network "0-0" is computed
+plus_minus_include = False    # from Kriegler, 2009: Unclear links; if False all unclear links are set to off state and only network "0-0" is computed
 ######################################################################
 duration = 50000 #actual real simulation years; OR EVEN 100000 years
 ScenarioT = ["05",1,15,2,3,4,5]
@@ -39,12 +42,15 @@ ScenarioC = [309, 344, 382, 424, 523, 646, 798]
 
 
 #Names to create the respective directories
-long_save_name = "results"
+#namefile = "no"
+long_save_name = "Review0/results"
 
+# if oscillation output
+amoc_os = []
 
 #######################GLOBAL VARIABLES##############################
 #drive coupling strength
-coupling_strength = np.linspace(0.0, 1.0, 11, endpoint=True)
+strength = 0
 #temperature input (forced with generated overshoot inputs)
 GMT_files = np.sort(glob.glob("temp_input/*.txt"))
 
@@ -54,8 +60,8 @@ sys_var = np.array(sys.argv[1:], dtype=str) #low sample -3, intermediate sample:
 
 #####################################################################
 
-GMT_files = GMT_files[int(sys_var[-2]):int(sys_var[-2])+50]
-
+GMT_files = GMT_files[int(sys_var[-2]):int(sys_var[-2])+500]
+print(len(GMT_files))
 latin_ID = sys_var[-1]
 ####################################################################
 
@@ -105,7 +111,7 @@ if plus_minus_include == True:
     plus_minus_links = np.array(plus_minus_data)
 
 else:
-    plus_minus_links = [np.array([1., 1., 1.])]
+    plus_minus_links = [np.array([0.0,0.0,0.0])]
 
 import time as timeModule
 
@@ -147,51 +153,52 @@ for kk in plus_minus_links:
             print("Final CO2 concentration:", ScenarioC[col], "ppm")
 
                 
-            for strength in coupling_strength:
-                print("Coupling strength: {}".format(strength), flush=True)
-                currentTime=timeModule.process_time()
+            
+            currentTime=timeModule.process_time()
 
-                output = []
+            output = []
 
-                temp_func = lambda t: GMT[int(t)] if t < len(GMT) else GMT[-1]
+            temp_func = lambda t: GMT[int(t)] if t < len(GMT) else GMT[-1]
 
-                t_eval= np.linspace(0, duration, int(duration)+1)
+            t_eval= np.linspace(0, duration, int(duration)+1)
 
-                net = earth_system.dynamic_earth_network(temp_func, strength, kk[0], kk[2])
+            net = earth_system.dynamic_earth_network(temp_func, strength, kk[0], kk[2])
 
-                atol= 1e-3
-                rtol= 1e-3
-                sol=solve_ivp(lambda t,x: net.f(x,t), [0,duration], [-1,-1,-1,-1], t_eval=t_eval, method='LSODA', atol=atol, rtol=rtol)
-                sol = np.array(sol.y)
-                for t in range(0, int(duration)):
-                    output.append([ECS, 
-                                   ScenarioC[col],
-                                   strength,
-                                   latin_ID,
-                                   net.get_number_tipped(sol[:,t]),
-                                   [net.get_tip_states(sol[:,t])[0]].count(True),
-                                   [net.get_tip_states(sol[:,t])[1]].count(True),
-                                   [net.get_tip_states(sol[:,t])[2]].count(True),
-                                   [net.get_tip_states(sol[:,t])[3]].count(True)
-                                   ])
-                    
-                endTime=timeModule.process_time()
-                print(endTime-currentTime, flush=True)
-                    
+            atol= 1e-3
+            rtol= 1e-3
+            sol=solve_ivp(lambda t,x: net.f(x,t), [0,duration], [-1,-1,-1,-1], t_eval=t_eval, method='LSODA', atol=atol, rtol=rtol)
+            sol = np.array(sol.y)
+            for t in range(0, int(duration)):
+                output.append([ECS, 
+                                ScenarioC[col],
+                                latin_ID,
+                                net.get_number_tipped(sol[:,t]),
+                                [net.get_tip_states(sol[:,t])[0]].count(True),
+                                [net.get_tip_states(sol[:,t])[1]].count(True),
+                                [net.get_tip_states(sol[:,t])[2]].count(True),
+                                [net.get_tip_states(sol[:,t])[3]].count(True)
+                                ])
                 
-                if len(output) != 0:
-                    #saving structure
-                    data = np.array(output) 
-                    np.savetxt("{}/network_{}_{}_{}/ECS{}_ID{}_Scenario{}_strngth{}.txt".format(long_save_name, 
-                    kk[0], kk[1], kk[2], ECS, latin_ID,ScenarioC[col], strength), data, fmt = '%s')
-               
-
-
-            #if len(out_gmt) != 0:
+            endTime=timeModule.process_time()
+            print(endTime-currentTime, flush=True)
+                
+            
+            if len(output) != 0:
                 #saving structure
-             #   output_data = np.array(out_gmt)
-              #  np.savetxt("{}/network_{}_{}_{}/ECS{}_ID{}_Scenario{}_strngth{}.txt".format(long_save_name, 
-               #     kk[0], kk[1], kk[2], ECS, latin_ID,ScenarioC[col], strength), output_data, fmt = '%s')
+                data = np.array(output)                    
 
+                # now only extract the last time step and append it
+                out_gmt.append(data[-1])
+                
+    
+            #necessary for break condition
+            if len(out_gmt) != 0:
+                #saving structure
+                output_data = np.array(out_gmt)
+                np.savetxt("{}/network_{}_{}_{}/ECS{}_ID{}_Scenario{}.txt".format(long_save_name, 
+                    kk[0], kk[1], kk[2], ECS, latin_ID,ScenarioC[col]), output_data, fmt = '%s')
+
+    
 print("Finish")
-
+#end = time.time()
+#print("Time elapsed until Finish: {}s".format(end - start))

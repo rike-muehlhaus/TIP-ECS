@@ -3,16 +3,14 @@ import glob
 import numpy as np
 
 # --- Path Setup ---
-base_path = Path('.') # Assuming this script is run from the project root
-results_path = base_path / "PyCascades" / "results"
+base_path = "/p/projects/dominoes/rikemue/ecs-pycas-latin/"
+results_path = os.path.join(base_path, "Review0/results/")
 
 tcrecs = np.loadtxt(os.path.join(base_path, "tcrecs.txt"), delimiter=",")
 ecs_unique = np.unique(np.round(tcrecs[:, 1], 6))
 scenarios = np.array([309, 344, 382, 424, 523, 646, 798])
 
-networks = ["0.0_0.0_0.0", "0.0_0.0_1.0", "0.0_0.0_-1.0",
-            "1.0_0.0_0.0", "1.0_0.0_1.0", "1.0_0.0_-1.0",
-            "-1.0_0.0_0.0", "-1.0_0.0_1.0", "-1.0_0.0_-1.0"]
+networks = ["0_0_0"] # this has 100 samples
 
 all_compiled_results = []
 
@@ -29,13 +27,15 @@ for network in networks:
         if data.ndim == 1: data = data.reshape(1, -1)
         
         # New indexing 
-        # 0:ECS, 1:Scenario, 4:TotalTipped, 5:GIS, 6:AMOC, 7:WAIS, 8:AMAZ
-        extracted = data[:, [0, 1, 4, 5, 6, 7, 8]]
+        # 0:ECS, 1:Scenario, 4:TotalTipped, 5:GIS, 6:AMOC, 7:WAIS, 8:AMAZ #[:, [0, 1, 4, 5, 6, 7, 8]]
+        extracted = data[:,[0, 1, 3, 4, 5, 6, 7]]  #[0, 1, 4, 5, 6, 7, 8]] #[0, 1, 3, 4, 5, 6, 7]] # this version for no interaction
         all_compiled_results.append(extracted)
+    print(len(all_compiled_results))
 
 # Step 2: Merge into one giant array
 print("Step 2: Merging data...", flush=True)
 full_data = np.concatenate(all_compiled_results, axis=0)
+print(len(full_data))
 del all_compiled_results 
 
 # Step 3: Calculate Risk
@@ -72,13 +72,13 @@ for s in scenarios:
             r1, r2, r3, r4, 
             element_sums[0], element_sums[1], element_sums[2], element_sums[3]
         ])
-
+    print(s,n_samples, flush=True)
 # To make a nice scatter plot I need to shuffle the data which is now ordered by ECS a bit
 indices = np.arange(len(risk_list))
 np.random.shuffle(indices)
 risk_array = np.array(risk_list)[indices]
 
 # Final Save
-save_path = os.path.join(base_path, "risks_data.npy")
+save_path = os.path.join(base_path, "Review/risks_data_no_interactions.npy")
 np.save(save_path, risk_array)
 print("Done! Risk data saved to:", save_path, flush=True)

@@ -43,6 +43,8 @@ else:
 print("Loading Temperature Data.")
 
 T15 = np.load("data/Temperature/T15.npy")
+T15 = np.pad(T15, ((0, 40000), (0, 0)), mode="edge")
+print(T15.shape)
 
 # C O L O R S : Crameri, F. (2018). Scientific colour maps. Zenodo. https://doi.org/10.5281/zenodo.1243862
 from cmcrameri import cm
@@ -53,7 +55,7 @@ scenario_colors = [cm.roma_r(i) for i in np.linspace(0, 1, n_colors)]
 
 # Plot style configuration
 plt.style.use('seaborn-v0_8-white')
-plt.rcParams['figure.figsize'] = (180/25.4, 110/25.4)
+plt.rcParams['figure.figsize'] = (180/25.4, 115/25.4)
 plt.rcParams['font.family'] = 'sans-serif'
 plt.rcParams['font.sans-serif'] = ['Arial']
 
@@ -156,7 +158,7 @@ element_colors = [cm.batlow(i) for i in np.linspace(0, 1, ec)]
 
 #%%
 
-fig = plt.figure()#layout="tight")
+fig = plt.figure()
 
 sub = fig.add_subplot(2, 3, 1)
 sub.set_xlim(-50,1200)
@@ -172,23 +174,60 @@ sub.legend(frameon=False, loc="upper left", ncol=1, bbox_to_anchor=[-0.1,-0.2])
 sub.tick_params(axis='both', which='major', width=0.5, length=2)
 sub.annotate(numbering_panels[0], xy=(-0.1, 1.05), xycoords='axes fraction', ha='left', size=7, color="black", weight="bold")
 
+# Arrows
 sub.annotate("", xy=(1.20, 0.8), xytext=(1.07, 0.8), xycoords='axes fraction', textcoords='axes fraction', arrowprops=dict(arrowstyle="-|>", color='black'))
 sub.annotate("", xy=(1.20, 0.2), xytext=(1.07, 0.2), xycoords='axes fraction', textcoords='axes fraction', arrowprops=dict(arrowstyle="-|>", color='black'))
 sub.set_title("Idealized CO2 scenarios", weight = "bold")
 
 # Plot 2: Temperatures
+def compress_time(t):
+    """Map 0-50000 years to plotting coordinates 0-1000."""
+    t = np.asarray(t)
+    out = np.empty_like(t, dtype=float)
+
+    # First part: unchanged
+    mask = t <= 1000
+    out[mask] = 0.8 * t[mask]      # 0-1000 -> 0-800
+
+    # Second part: compressed
+    out[~mask] = 800 + (t[~mask]-1000) * (200/(50000-1000))
+
+    return out
+
 sub = fig.add_subplot(2, 3, 2)
-sub.set_xlim(-50,1000)
-#sub.fill_between(np.arange(0,1200), np.max(T15[:1200, :], axis=1), np.min(T15[:1200, :], axis=1),  color=scenario_colors[3], alpha=0.3, edgecolor="none")
+#sub.set_xlim(-50,1000)
+time = np.arange(50000)
+x = compress_time(time)
+
 for i in range(1000):
-    plt.plot(T15[:1200, i], color=scenario_colors[2], alpha=0.3, lw=0.5)                
+    sub.plot(x, T15[:, i],
+             color=scenario_colors[2], alpha=0.3, lw=0.5)
+
+sub.plot(x, T15[:, 334],
+         color="gray", lw=1, 
+         label="382 ppm Scenario:\n$\Delta$GMT under\nmedian ECS")
+sub.set_xlim(0, 1000)
+
+tick_years = [0, 200, 400, 600, 800, 1000, 50000]
+sub.set_xticks(compress_time(np.array(tick_years)))
+sub.set_xticklabels([str(y) for y in tick_years])
+
+# Optional separator at year 1000
+sub.axvline(compress_time(np.array([1000]))[0], color="black", lw=0.5)
+
+""" for i in range(1000):
+    plt.plot(T15[:800, i], color=scenario_colors[2], alpha=0.3, lw=0.5)
+    plt.plot(np.arange(800,1000), T15[800:1000, i], alpha=0.1, lw=0.5, color=scenario_colors[2])                
 sub.plot(np.arange(0,1200), T15[:1200, 334], color="gray", lw=1, label="382 ppm Scenario:\n$\Delta$GMT under\nmedian ECS")
-sub.set_ylabel('$\Delta$GMST (°C)')
-sub.set_xlabel("Time (years)")
+sub.axvline(800, color="black", lw=0.5)
 sub.legend(frameon=False, loc="upper left", fontsize=6)
 sub.tick_params(axis='both', which='major', width=0.5, length=2)
+sub.set_xticks(np.arange(0,1001,200))
+sub.set_xticklabels(["0","200","400","800","1000","50000"])
+"""
+sub.set_ylabel('$\Delta$GMST (°C)')
+sub.set_xlabel("Time (years)")
 sub.annotate(numbering_panels[1], xy=(-0.1, 1.05), xycoords='axes fraction', ha='left', size=7, color="black", weight="bold")
- 
 sub.annotate("", xy=(1.20, 0.8), xytext=(1.07, 0.8), xycoords='axes fraction', textcoords='axes fraction', arrowprops=dict(arrowstyle="-|>", color='black'))
 sub.annotate("", xy=(1.20, 0.2), xytext=(1.07, 0.2), xycoords='axes fraction', textcoords='axes fraction', arrowprops=dict(arrowstyle="-|>", color='black'))
 sub.set_title("FaIR", weight="bold")
@@ -197,15 +236,19 @@ sub.set_title("FaIR", weight="bold")
 sub = fig.add_subplot(2, 3, 3)
 sub.set_ylim(-1.15,1.4)
 sub.set_xlim(0,1000)
-sub.plot(time, gis, label="GIS", color= element_colors[2])
-sub.plot(time, thc, label="AMOC", color= element_colors[0])
-sub.plot(time, wais, label="WAIS", color= element_colors[3])
-sub.plot(time, amaz, label="AMAZ", color= element_colors[1])
+sub.plot(time[:800], gis[:800], label="GIS", color= element_colors[2])
+sub.plot(time[800:1000], gis[800:1000], linestyle="--", color= element_colors[2])
+sub.plot(time[:800], thc[:800], label="AMOC", color= element_colors[0])
+sub.plot(time[800:1000], thc[800:1000], linestyle="--", color= element_colors[0])
+sub.plot(time[:800], wais[:800], label="WAIS", color= element_colors[3])
+sub.plot(time[800:1000], wais[800:1000], linestyle="--", color= element_colors[3])
+sub.plot(time[:800], amaz[:800], label="AMAZ", color= element_colors[1])
+sub.plot(time[800:1000], amaz[800:1000], linestyle="--", color= element_colors[1])
 sub.set_xlabel("Time (years)")
 sub.set_ylabel("Tipping element\nstate")
 sub.axhline(0, color="black", lw=0.5, zorder=-1)
 sub.set_yticks([-1, 0, 1])
-sub.legend(frameon=False, bbox_to_anchor=[0.6,0.07], fontsize=6)
+sub.legend(frameon=False, bbox_to_anchor=[0.45,0.84], fontsize=6)
 sub.axhspan(1/np.sqrt(3),1.5, color="lightgray", alpha=0.5, lw=0, zorder=-1)
 sub.axhspan(-1.5, -1/np.sqrt(3), color="lightgray", alpha=0.5, lw=0, zorder=-1)
 sub.annotate("Initial stable\nstate", xy=(0.02, 0.12), xycoords='axes fraction', ha='left', size=7, color="dimgray")
@@ -213,6 +256,9 @@ sub.annotate("Alternative\nstable state", xy=(0.02, 0.83), xycoords='axes fracti
 sub.tick_params(axis='both', which='major', width=0.5, length=2)
 sub.annotate(numbering_panels[2], xy=(-0.1, 1.05), xycoords='axes fraction', ha='left', size=7, color="black", weight="bold")
 sub.set_title("PyCascades", weight="bold")
+sub.axvline(800, color="black", lw=0.5)
+sub.set_xticks(np.arange(0,1001,200))
+sub.set_xticklabels(["0","200","400","800", "1000","50000"])
 
 # Plot 4: Bifurcation ECS Plot
 h = 1.6
@@ -273,9 +319,11 @@ sub.annotate("", xy=(1.03, 0.9), xytext=(1.03, 0.55),
 sub.annotate("Coupling-induced\ntipping", xy=(0.56, 0.65), xycoords='axes fraction', ha='right', size=7, color="black")
 sub.annotate(numbering_panels[3], xy=(-0.05, 1.05), xycoords='axes fraction', ha='left', size=7, color="black", weight="bold")
 
-fig.subplots_adjust(wspace=0.35, hspace=0.3)
-sub.set_position([0.285, 0.02, 0.45, 0.4])  # [left, bottom, width, height]
-plt.savefig(here / "Fig1.pdf", bbox_inches='tight')
-plt.show()
+
+fig.subplots_adjust(left = 0.08, bottom = 0.05, right=0.95, top = 0.95, wspace=0.35, hspace=0.4)
+sub.set_position([0.285, 0.08, 0.45, 0.35])  # [left, bottom, width, height]
+plt.savefig(here / "Fig1.svg")
+plt.savefig(here / "Fig1.pdf")
+
 
 # %%
