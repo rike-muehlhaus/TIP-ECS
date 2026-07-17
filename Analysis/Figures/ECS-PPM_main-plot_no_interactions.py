@@ -61,15 +61,15 @@ else:
     print(f"{tcrecs_file} exists already, skipping download.")
 
 tcrecs = np.loadtxt("data/tcrecs.txt", delimiter=",")
-
+""" 
 # Load Risk Data
 risk_file = Path("data/risks_data.npy")
 if not risk_file.exists():
     download_from_zenodo(filename="risks_data.npy")
 else:
     print(f"{risk_file} exists already, skipping download.")
-    
-risk = np.load("data/risks_data.npy")
+  """   
+risk = np.load("data/risks_data_no_interactions.npy")
 print(len(risk))
 
 #%%
@@ -160,8 +160,8 @@ plt.xlim(300,800)
 
 plt.subplots_adjust( top=0.92, bottom=0.2)
 
-plt.savefig("Fig3.pdf")
-print("Figure saved as Fig3.pdf")
+plt.savefig("Fig3_no_interactions.pdf")
+print("Figure saved as Fig3_no_interactions.pdf")
 
 
 # --- Find minimum CMIP6 constrained risk

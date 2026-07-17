@@ -1,8 +1,5 @@
-# -*- coding: utf-8 -*-
 
 #Get the Numbers named in the Results:
-
-
 import os
 import numpy as np
 import matplotlib.pyplot as plt
@@ -20,7 +17,7 @@ os.chdir(parent)
 
 from load_data import download_from_zenodo
 
-# Load Risk Data
+""" # Load Risk Data
 risk_file = Path("data/risks_data.npy")
 if not risk_file.exists():
     download_from_zenodo(
@@ -28,8 +25,9 @@ if not risk_file.exists():
         filename="risks_data.npy"
     )
 else:
-    print(f"{risk_file} exists already, skipping download.") 
-risk = np.load("data/risks_data.npy")
+    print(f"{risk_file} exists already, skipping download.")
+  """   
+risk = np.load("data/risks_data_no_interactions.npy")
 
 # Load ECS data
 tcrecs_file = Path("data/tcrecs.txt")

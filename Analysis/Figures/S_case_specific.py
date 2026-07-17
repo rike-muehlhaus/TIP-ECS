@@ -10,6 +10,7 @@ from cmcrameri import cm # Crameri, F. (2018). Scientific colour maps. Zenodo. h
 plt.style.use('seaborn-v0_8-white')
 plt.rcParams['figure.figsize'] = (180/25.4, 175/25.4)
 plt.rcParams['font.family'] = 'sans-serif'
+plt.rcParams['font.sans-serif'] = ['Arial']  
 
 plt.rcParams.update({
     # Font settings
